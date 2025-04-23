@@ -32,6 +32,12 @@ const clientLinks = [
   { label: 'Digital Products', href: '/digital-products' },
 ];
 
+const adminLinks = [
+  { label: 'Manage Jobs', href: '/admin/manage-jobs' },
+  { label: 'User Management', href: '/admin/manage-users' },
+  { label: 'Resolve Dispute', href: '/admin/manage-queries' },
+];
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,6 +54,8 @@ const Navbar = () => {
       setNavLinks(freelancerLinks);
     } else if (user && user.unsafeMetadata?.role === 'client') {
       setNavLinks(clientLinks);
+    } else if (user && user.unsafeMetadata?.role === 'admin') {
+      setNavLinks(adminLinks);
     } else {
       setNavLinks(defaultLinks);
     }

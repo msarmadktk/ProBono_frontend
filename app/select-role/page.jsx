@@ -76,7 +76,7 @@ export default function SelectRole() {
             router.push("/profile");
             break;
           case "admin":
-            router.push("/admin-pannel");
+            router.push("/admin/manage-jobs");
             break;
           default:
             alert("Invalid role selected.");
