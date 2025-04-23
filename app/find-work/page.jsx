@@ -236,79 +236,81 @@ export default function JobsListingPage() {
           {fetchError ? (
             <div className="text-red-500">{fetchError}</div>
           ) : jobs.length ? (
-            jobs.map((job, idx) => (
-              <div key={job.id} className="mb-4">
-                <Card className="p-4">
-                  <div className="text-xs text-gray-500 mb-1">
-                    Posted&nbsp;
-                    {new Date(job.created_at).toLocaleString()}
-                  </div>
+            jobs
+              .filter((job) => job.status === "approved")
+              .map((job, idx, filteredJobs) => (
+                <div key={job.id} className="mb-4">
+                  <Card className="p-4">
+                    <div className="text-xs text-gray-500 mb-1">
+                      Posted 
+                      {new Date(job.created_at).toLocaleString()}
+                    </div>
 
-                  <h2 className="text-lg font-semibold mb-1 text-gray-900">
-                    {job.title}
-                  </h2>
+                    <h2 className="text-lg font-semibold mb-1 text-gray-900">
+                      {job.title}
+                    </h2>
 
-                  <div className="flex flex-wrap gap-x-2 text-sm text-gray-500 mb-3">
-                    <span>{job.job_type}</span>
-                    <span>|</span>
-                    <span>{job.experience_level}</span>
-                    <span>|</span>
-                    <span>Est. Budget: ${job.budget}</span>
-                  </div>
+                    <div className="flex flex-wrap gap-x-2 text-sm text-gray-500 mb-3">
+                      <span>{job.job_type}</span>
+                      <span>|</span>
+                      <span>{job.experience_level}</span>
+                      <span>|</span>
+                      <span>Est. Budget: ${job.budget}</span>
+                    </div>
 
-                  <p className="text-sm mb-4 whitespace-pre-line text-gray-700">
-                    {job.description}
-                  </p>
+                    <p className="text-sm mb-4 whitespace-pre-line text-gray-700">
+                      {job.description}
+                    </p>
 
-                  {/* metadata row */}
-                  <div className="flex items-center justify-between flex-wrap gap-2 pr-5">
-                    <div className="flex items-center space-x-4">
+                    {/* metadata row */}
+                    <div className="flex items-center justify-between flex-wrap gap-2 pr-5">
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Image
+                            src="/images/payment.svg"
+                            alt="payment verified"
+                            width={16}
+                            height={16}
+                            className="mr-1"
+                          />
+                          <span className="text-xs">Payment verified</span>
+                        </div>
+                        {renderStarRating()}
+                        <div className="text-xs">{job.views} views</div>
+                      </div>
+
                       <div className="flex items-center">
                         <Image
-                          src="/images/payment.svg"
-                          alt="payment verified"
+                          src="/images/location.svg"
+                          alt="Location"
                           width={16}
                           height={16}
                           className="mr-1"
                         />
-                        <span className="text-xs">Payment verified</span>
+                        <span className="text-xs">{job.location}</span>
                       </div>
-                      {renderStarRating()}
-                      <div className="text-xs">{job.views} views</div>
                     </div>
 
-                    <div className="flex items-center">
-                      <Image
-                        src="/images/location.svg"
-                        alt="Location"
-                        width={16}
-                        height={16}
-                        className="mr-1"
-                      />
-                      <span className="text-xs">{job.location}</span>
+                    {/* proposals + apply */}
+                    <div className="flex justify-between items-center mt-4">
+                      <div className="text-xs">
+                        Proposals: 
+                        {proposalCounts[job.id] ?? "–"}
+                      </div>
+
+                      <Button
+                        className="text-white font-semibold cursor-pointer"
+                        style={{ background: FIVERR_BLACK }}
+                        onClick={() => router.push(`/apply-job/${job.id}`)}
+                      >
+                        Apply
+                      </Button>
                     </div>
-                  </div>
+                  </Card>
 
-                  {/* proposals + apply */}
-                  <div className="flex justify-between items-center mt-4">
-                    <div className="text-xs">
-                      Proposals:&nbsp;
-                      {proposalCounts[job.id] ?? "–"}
-                    </div>
-
-                    <Button
-                      className="text-white font-semibold"
-                      style={{ background: FIVERR_BLACK }}
-                      onClick={() => router.push(`/apply-job/${job.id}`)}
-                    >
-                      Apply
-                    </Button>
-                  </div>
-                </Card>
-
-                {idx < jobs.length - 1 && <Separator className="my-4" />}
-              </div>
-            ))
+                  {idx < filteredJobs.length - 1 && <Separator className="my-4" />}
+                </div>
+              ))
           ) : (
             <div>No jobs found matching your criteria.</div>
           )}
