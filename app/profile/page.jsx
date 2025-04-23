@@ -57,9 +57,10 @@ export default function ProfilePage () {
   const [editedTitle, setEditedTitle] = useState('')
   const [isEditingDescription, setIsEditingDescription] = useState(false)
   const [editedBio, setEditedBio] = useState('')
-  const [isEditingSkills, setIsEditingSkills] = useState(false)
-  const [editedSkills, setEditedSkills] = useState([])
-  const [newSkill, setNewSkill] = useState('')
+  const [editedSkills, setEditedSkills] = useState([]);
+const [newSkill, setNewSkill] = useState('');
+const [isEditingSkills, setIsEditingSkills] = useState(false);
+
   const [showFullBio, setShowFullBio] = useState(false)
 
   const [newProjectDescription, setNewProjectDescription] = useState('')
@@ -202,6 +203,8 @@ export default function ProfilePage () {
     }
   }
 
+  ////////////////////////// Portfolio items ////////////////////////////////
+
   const handleEditPortfolio = item => {
     setEditingPortfolioItem(item)
     setNewProjectTitle(item.project_title)
@@ -267,6 +270,8 @@ export default function ProfilePage () {
       console.error('Failed to save portfolio item:', error)
     }
   }
+
+////////////////////////// Templates (DigitalProducts) ////////////////////////////////
 
   const addTemplate = async () => {
     if (!user || !newTemplate.product_name.trim()) return
@@ -348,6 +353,7 @@ export default function ProfilePage () {
     }
   }
 
+  ////////////////////////// Work History ////////////////////////////////
   const saveWorkEntry = async () => {
     if (!user || !newWork.company || !newWork.position || !newWork.from_date)
       return
@@ -417,6 +423,42 @@ export default function ProfilePage () {
       console.error('Failed to delete work entry:', error)
     }
   }
+
+////////////////////////// SKILLS ////////////////////////////////
+
+  const addSkill = async () => {
+    const skillToAdd = newSkill.trim();
+    if (!skillToAdd || editedSkills.some(s => s.toLowerCase() === skillToAdd.toLowerCase())) {
+      return; // don't add empty or duplicate skills
+    }
+  
+    try {
+      const res = await axios.post(`http://localhost:5000/api/skills/${dbUserId}`, {
+        skill: skillToAdd
+      });
+  
+      if (res.data.skills) {
+        setEditedSkills(res.data.skills);
+        setNewSkill('');
+      }
+    } catch (error) {
+      console.error('Failed to add skill:', error);
+    }
+  };
+
+  const deleteSkill = async (skill) => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/skills/${dbUserId}/${skill}`);
+      if (res.data.skills) {
+        setEditedSkills(res.data.skills);
+      }
+    } catch (error) {
+      console.error('Failed to delete skill:', error);
+    }
+  };
+
+  
+  
 
   return (
     <div className='max-w-6xl mx-auto bg-white p-8'>
@@ -826,6 +868,48 @@ export default function ProfilePage () {
           )}
         </div>
       </div>
+
+
+      {/*Skills */}
+      <div className="py-6 border-b">
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-xl font-medium">Skills</h2>
+    <Button variant="ghost" size="sm" onClick={() => setIsEditingSkills(prev => !prev)}>
+      {isEditingSkills ? 'Done' : 'Edit'}
+    </Button>
+  </div>
+
+  {isEditingSkills && (
+    <div className="flex gap-2 mb-4">
+      <input
+        type="text"
+        placeholder="Add new skill"
+        className="border p-2 rounded w-full"
+        value={newSkill}
+        onChange={(e) => setNewSkill(e.target.value)}
+      />
+      <Button onClick={addSkill} size="sm" variant="outline">Add</Button>
+    </div>
+  )}
+
+  {editedSkills.length > 0 ? (
+    <div className="flex flex-wrap gap-2">
+      {editedSkills.map((skill, index) => (
+        <span
+          key={index}
+          className="px-3 py-1 bg-gray-200 text-sm rounded-full flex items-center gap-2"
+        >
+          {skill}
+          {isEditingSkills && (
+            <button onClick={() => deleteSkill(skill)} className="text-red-500 text-xs">×</button>
+          )}
+        </span>
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500">No skills added yet.</p>
+  )}
+</div>
 
       {/* Work History */}
       <div className='py-6'>
