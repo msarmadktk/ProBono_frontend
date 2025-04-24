@@ -28,6 +28,7 @@ const freelancerLinks = [
 
 const clientLinks = [
   { label: 'Post Job', href: '/post-job' },
+  { label: 'Posted Jobs', href: '/posted-jobs' },
   { label: 'Hire Talent', href: '/hire-talent' },
   { label: 'Digital Products', href: '/digital-products' },
 ];

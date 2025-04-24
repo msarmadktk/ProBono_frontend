@@ -129,7 +129,7 @@ export default function JobDetailPage() {
     try {
       const fullProposal = {
         freelancerId: String(freelancerId),
-        proposal_content: proposal.proposal_content,
+        proposalContent: proposal.proposal_content,
         timeline: proposal.timeline,
         bid: bidValue,
       };
