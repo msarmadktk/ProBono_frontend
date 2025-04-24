@@ -30,6 +30,7 @@ const clientLinks = [
   { label: 'Post Job', href: '/post-job' },
   { label: 'Hire Talent', href: '/hire-talent' },
   { label: 'Digital Products', href: '/digital-products' },
+  
 ];
 
 const adminLinks = [
