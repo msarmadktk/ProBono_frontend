@@ -31,6 +31,8 @@ const clientLinks = [
   { label: 'Posted Jobs', href: '/posted-jobs' },
   { label: 'Hire Talent', href: '/hire-talent' },
   { label: 'Digital Products', href: '/digital-products' },
+  { label: 'chat', href: '/chat' }
+
 ];
 
 const adminLinks = [
