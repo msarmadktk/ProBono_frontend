@@ -31,13 +31,10 @@ const clientLinks = [
   { label: 'Posted Jobs', href: '/posted-jobs' },
   { label: 'Hire Talent', href: '/hire-talent' },
   { label: 'Digital Products', href: '/digital-products' },
-  
 ];
 
 const adminLinks = [
-  { label: 'Manage Jobs', href: '/admin/manage-jobs' },
-  { label: 'User Management', href: '/admin/manage-users' },
-  { label: 'Resolve Dispute', href: '/admin/manage-queries' },
+  { label: 'Manage Jobs', href: '/admin/manage-jobs' }
 ];
 
 const Navbar = () => {
